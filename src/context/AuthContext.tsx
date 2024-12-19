@@ -15,31 +15,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<string | null>(localStorage.getItem("user"));
 
   const login = async (username: string, password: string) => {
-    console.log('Attempting login with', username, password);
+    console.log("Attempting login with", username, password);
     try {
-      const response = await axios.post('https://dummyjson.com/auth/login', {
+      const response = await axios.post("https://dummyjson.com/auth/login", {
         username,
         password,
       });
-  
-      console.log('Login response:', response); // Log the response
+
+      console.log("Login response:", response); 
       const data = response.data;
       if (data.accessToken) {
         setUser(username);
-        localStorage.setItem('user', username);
+        localStorage.setItem("user", username);
       } else {
-        console.error('Invalid login response:', data);
+        console.error("Invalid login response:", data);
       }
     } catch (error) {
-      console.error('Login failed:', error);
-      // You can add more error handling here if needed
+      console.error("Login failed:", error);
     }
   };
-  
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+    localStorage.clear();
+    window.location.href = "/";
   };
 
   return (
