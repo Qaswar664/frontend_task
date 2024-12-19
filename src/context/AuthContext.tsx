@@ -1,50 +1,42 @@
-import React, { createContext, useContext, useState } from "react";
-import axios from "axios";
+import React, { createContext, useContext, useState } from 'react';
+import { loginUser } from '../api/auth';
+import { clearLocalStorage, getFromLocalStorage, saveToLocalStorage } from '../utils';
+import { AuthContextType } from '../types';
 
-interface AuthContextType {
-  user: string | null;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
-}
+
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<string | null>(localStorage.getItem("user"));
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<string | null>(getFromLocalStorage('user'));
 
   const login = async (username: string, password: string) => {
-    console.log("Attempting login with", username, password);
     try {
-      const response = await axios.post("https://dummyjson.com/auth/login", {
-        username,
-        password,
-      });
-
-      console.log("Login response:", response); 
-      const data = response.data;
+      const data = await loginUser(username, password);
       if (data.accessToken) {
         setUser(username);
-        localStorage.setItem("user", username);
+        saveToLocalStorage('user', username);
       } else {
-        console.error("Invalid login response:", data);
+        console.error('Invalid login response:', data);
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login failed:', error);
     }
   };
 
   const logout = () => {
-    localStorage.clear();
-    window.location.href = "/";
+    clearLocalStorage();
+    setUser(null);
+    window.location.href = '/';
   };
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
