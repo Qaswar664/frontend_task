@@ -9,7 +9,7 @@ const Dashboard: React.FC = () => {
       <header className="bg-gray-100 text-gray-900 flex justify-between items-center p-4 shadow-md">
         <div className="text-lg font-semibold">Frontend Task</div>
         <div className="flex items-center space-x-4">
-          <span className='text-gray-900'>{auth?.user}</span>
+          <span className='text-gray-900'>Welcom,{auth?.user}</span>
           <button
             onClick={auth?.logout}
             className="px-4 py-2 bg-red-500 rounded hover:bg-red-600 text-white"

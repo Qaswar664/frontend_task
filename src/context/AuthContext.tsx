@@ -3,8 +3,6 @@ import { loginUser } from '../api/auth';
 import { clearLocalStorage, getFromLocalStorage, saveToLocalStorage } from '../utils';
 import { AuthContextType } from '../types';
 
-
-
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

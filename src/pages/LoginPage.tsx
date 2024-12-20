@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
     console.log("Login submitted");
     try {
       await auth?.login(username, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
       setError(null);
     } catch (err) {
       console.error("Login error:", err);
@@ -30,47 +30,52 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-between h-screen bg-white">
-      <div className="w-full md:w-1/3 p-6 ">
-        <div className="mb-6">
-          <img src={logo} alt="Logo" />
+    <div className="flex w-full h-full md:h-screen bg-gray-50 my-8 md:my-0">
+     
+      <div className="flex flex-col justify-center w-full md:w-2/5 lg:w-1/3 h-full px-8 bg-white">
+        <div className="mb-2">
+          <img src={logo} alt="Logo" className="h-8" />
         </div>
-        <h1 className="text-3xl font-bold  mb-4">Welcome Back</h1>
-        <p className=" mb-6">You need to be signed in the access the project dashboard</p>
-
-        <form onSubmit={handleLogin}>
-          {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
-
-          <Input
-            label="Email or Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            id="username"
-            required
-            className="focus:ring-indigo-500"
-          />
-
-          <div className="relative mb-4">
+        <div className="flex items-center md:items-start gap-1 md:gap-0 flex-row md:flex-col text-lg md:text-2xl lg:text-5xl font-semibold text-textblack">
+          <h1>Welcome</h1>
+          <h2>back</h2>
+        </div>
+        <p className="text-[#3B4752] my-2 font-light text-base md:text-lg">
+          You need to be signed in to access the project dashboard.
+        </p>
+        <form onSubmit={handleLogin} className="space-y-4">
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          <div>
+            <Input
+              label="Email or Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              id="username"
+              required
+              placeholder="wesley.mendoza@example.com"
+              className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="relative">
             <Input
               label="Password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               id="password"
+              placeholder="*****"
               required
-              className="py-3 ps-4 pe-10 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+              className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-11 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-400 rounded-e-md focus:outline-none focus:text-blue-600 dark:text-neutral-600 dark:focus:text-blue-500"
+              className="absolute right-4 top-[53px] transform -translate-y-1/2 text-gray-500 hover:text-blue-500"
             >
               {showPassword ? (
                 <svg
-                  className="shrink-0 size-3.5"
-                  width="30"
-                  height="30"
+                  className="w-5 h-5"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -85,9 +90,7 @@ const LoginPage: React.FC = () => {
                 </svg>
               ) : (
                 <svg
-                  className="shrink-0 size-3.5"
-                  width="30"
-                  height="30"
+                  className="w-5 h-5"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -101,47 +104,45 @@ const LoginPage: React.FC = () => {
               )}
             </button>
           </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <input type="checkbox" id="keep-signed-in" className="mr-2" />
+              <label
+                htmlFor="keep-signed-in"
+                className="text-[16px] text-textblack"
+              >
+                Keep me signed in
+              </label>
+            </div>
 
-
-          <div className="flex items-center justify-between mb-4">
-            <label className="flex items-center text-sm">
-              <input type="checkbox" className="mr-2" />
-              Keep me signed in
-            </label>
             <Link
-              to="/forgot-password"
-              className="text-sm text-black border-b border-black pb-[1px]"
+              to="/#"
+              className="text-[16px] font-medium text-black  underline"
             >
               Forgot password?
             </Link>
-
-
           </div>
-
-          <Button type="submit" label="Sign In" className="w-full mb-4" />
-
-          <button className="w-full p-2 flex items-center justify-center bg-gray-200 hover:bg-gray-300">
+          <Button
+            type="submit"
+            label="Sign In"
+            className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          />
+          <button className="w-full flex items-center justify-center py-2 border text-[16px] border-inputBorder rounded ">
             <img src={googleLogo} alt="Google" className="mr-2 w-5 h-5" />
-            Sign In with Google
+            <span className="text-center">Sign in with Google</span>
           </button>
-          <div className="text-center mt-4">
-            <span className="text-sm">
-              Haven't joined yet?
-              <Link to="/" className="text-black-500 underline">
-                Sign in
-              </Link>
-            </span>
-          </div>
         </form>
+        <p className="mt-4 text-center  text-[16px] text-textblack">
+          Don't have an account?{" "}
+          <Link to="/#" className="text-[#11161B]  font-semibold underline">
+            Sign in
+          </Link>
+        </p>
       </div>
-      <div className="hidden md:block w-full md:w-2/3 min-h-screen lg:h-screen">
-        <img
-          src={image}
-          alt="Login Illustration"
-          className="w-full h-full object-cover"
-        />
+    
+      <div className="hidden md:block w-full md:w-3/5 lg:w-2/3 h-full bg-gray-100">
+        <img src={image} alt="Login Illustration" className="w-full h-full" />
       </div>
-
     </div>
   );
 };

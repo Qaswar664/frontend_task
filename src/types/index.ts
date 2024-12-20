@@ -6,6 +6,7 @@ export interface LoginForm {
   id: string;
   required?: boolean;
   className?: string;
+  placeholder:string;
 }
 
 export interface LoginButton {
